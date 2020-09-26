@@ -193,7 +193,7 @@
   width: 108px;
   position: sticky;
   top: 60px;
-  left:200px;
+  left:180px;
   float: left;
   border: 1px solid #e2ded6;
   border-radius: 5px;
@@ -286,6 +286,7 @@
 .title>h3:hover
 ,.title>div.title_right:hover{
   color: #b4a078;
+  cursor: pointer;
 }
 /* 个性样式 */
 .news .title>div.explain{
@@ -341,6 +342,7 @@
 .recommend .title>.recommend_nav:hover{
   border-bottom: 2px solid #b4a078;
   color: #b4a078;
+  cursor: pointer;
 }
 /* 内容 */
 .recommend ul.list::after{
@@ -907,7 +909,7 @@
 /* -------底部2----------- */
 .foot2{
   padding-top: 25px;
-  height: 251px;
+  height: 230px;
   background-color: #414141;
 }
 .foot2 ul.list{
@@ -950,7 +952,7 @@
   margin-top: 20px;
 }
 .foot2 div.permit>span{
-  margin-right: 12px;
+  margin-right: 5px;
 }
 .foot2 div.record>span{
   margin-right: 2px;
