@@ -1,0 +1,280 @@
+<div class="home">
+  <div id="one"></div>
+  <div id="two"></div>
+  <div id="three"></div>
+  <div id="four"></div>
+</div>
+
+<script>
+  $(function () {
+
+    // 第一个图表 ---- Highcharts
+    one()
+    function one() {
+      var chart = Highcharts.chart('one', {
+        title: {
+          text: '混合图表'
+        },
+        xAxis: {
+          categories: ['苹果', ' 橙', '梨', '香蕉', '李子']
+        },
+        plotOptions: {
+          series: {
+            stacking: 'normal'
+          }
+        },
+        labels: {
+          items: [{
+            html: '水果消耗',
+            style: {
+              left: '100px',
+              top: '18px',
+              color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            }
+          }]
+        },
+        series: [{
+          type: 'column',
+          name: '小张',
+          data: [3, 2, 1, 3, 4]
+        }, {
+          type: 'column',
+          name: '小潘',
+          data: [2, 3, 5, 7, 6]
+        }, {
+          type: 'column',
+          name: '小王',
+          data: [4, 3, 3, 9, 0]
+        }, {
+          type: 'spline',
+          name: '平均值',
+          data: [3, 2.67, 3, 6.33, 3.33],
+          marker: {
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[3],
+            fillColor: 'white'
+          }
+        }, {
+          type: 'pie',
+          name: '总的消耗',
+          data: [{
+            name: '小张',
+            y: 13,
+            color: Highcharts.getOptions().colors[0] // Jane's color
+          }, {
+            name: '小潘',
+            y: 23,
+            color: Highcharts.getOptions().colors[1] // John's color
+          }, {
+            name: '小王',
+            y: 19,
+            color: Highcharts.getOptions().colors[2] // Joe's color
+          }],
+          center: [100, 80],
+          size: 100,
+          showInLegend: false,
+          dataLabels: {
+            enabled: false
+          }
+        }]
+      });
+    }
+
+    // 第二个图表 ---ECharts
+    two()
+    function two() {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('two'));
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: '未来一周气温变化',
+          subtext: '纯属虚构'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['最高气温', '最低气温']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            dataView: { readOnly: false },
+            magicType: { type: ['line', 'bar'] },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} °C'
+          }
+        },
+        series: [
+          {
+            name: '最高气温',
+            type: 'line',
+            data: [11, 11, 15, 13, 12, 13, 10],
+            markPoint: {
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' }
+              ]
+            }
+          },
+          {
+            name: '最低气温',
+            type: 'line',
+            data: [1, -2, 2, 5, 3, 2, 0],
+            markPoint: {
+              data: [
+                { name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }
+              ]
+            },
+            markLine: {
+              data: [
+                { type: 'average', name: '平均值' },
+                [{
+                  symbol: 'none',
+                  x: '90%',
+                  yAxis: 'max'
+                }, {
+                  symbol: 'circle',
+                  label: {
+                    position: 'start',
+                    formatter: '最大值'
+                  },
+                  type: 'max',
+                  name: '最高点'
+                }]
+              ]
+            }
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    }
+
+
+    // 第三个图表 ---ECharts
+    three()
+    function three() {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('three'));
+      // 指定图表的配置项和数据
+      var option = {
+    xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [120, 200, 150, 80, 70, 110, 130],
+        type: 'line',
+        symbol: 'triangle',
+        symbolSize: 20,
+        lineStyle: {
+            color: 'green',
+            width: 4,
+            type: 'dashed'
+        },
+        itemStyle: {
+            borderWidth: 3,
+            borderColor: 'yellow',
+            color: 'blue'
+        }
+    }]
+};
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    }
+
+    // 第四个图表 ---Highcharts
+    four()
+    function four() {
+      var chart = Highcharts.chart('four', {
+        chart: {
+          type: 'pie',
+          options3d: {
+            enabled: true,
+            alpha: 45
+          }
+        },
+        title: {
+          text: '简数科技每周水果消耗量'
+        },
+        subtitle: {
+          text: 'Highcharts 中的3D环形图'
+        },
+        plotOptions: {
+          pie: {
+            innerSize: 100,
+            depth: 45
+          }
+        },
+        series: [{
+          name: '货物金额',
+          data: [
+            ['香蕉', 8],
+            ['猕猴桃', 3],
+            ['桃子', 1],
+            ['橘子', 6],
+            ['苹果', 8],
+            ['梨', 4],
+            ['柑橘', 4],
+            ['橙子', 1],
+            ['葡萄 (串)', 1]
+          ]
+        }]
+      });
+    }
+
+  })
+</script>
+
+<style>
+  .home {
+    height: 480px;
+    /* background-color: pink; */
+  }
+
+  .home>div {
+    width: 50%;
+    height: 50%;
+    float: left;
+  }
+
+  /* #one {
+    background-color: indianred;
+  }
+
+  #two {
+    background-color: indigo;
+  }
+
+  #three {
+    background-color: teal;
+  }
+
+  #four {
+    background-color: palegreen;
+  } */
+</style>

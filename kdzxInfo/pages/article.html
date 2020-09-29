@@ -1,0 +1,140 @@
+<div class="article">
+  <div class="article_content">
+    <!-- 按钮 -->
+    <button type="button" class="btn btn-success addArticle">新增</button>
+    <button type="button" class="btn btn-danger batch_del">批量删除</button>
+    <!-- 表格 开始-->
+    <div class="table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">编号</th>
+            <th scope="col">文章标题</th>
+            <th scope="col">所属栏目</th>
+            <th scope="col">作者</th>
+            <th scope="col">发布时间</th>
+            <th scope="col">阅读次数</th>
+            <th scope="col">状态</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <!-- 表格 结束 -->
+  </div>
+  <div class="page">
+    <!-- 分页查询 开始 -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination" id="pagination">
+        <!-- <li class="page-item"><a class="page-link" href="#">上一页</a></li> -->
+        <!-- <li class="page-item"><a class="page-link" href="#">下一页</a></li> -->
+      </ul>
+    </nav>
+    <!-- 分页查询 结束 -->
+  </div>
+</div>
+g
+<script>
+  $(function () {
+
+    // 批量删除
+    $('tbody').on({
+      click:function(){
+
+      }
+    },'')
+
+    // 操作 删除按钮
+    $('tbody').on({
+      click: function () {
+        // 拿到当前行的id
+        var oid = $(this).closest('tr').find('.id').text()
+        $.get(baseURL + '/manager/article/deleteArticleById', { id: oid }, function (res) {
+          loadArticle()
+        })
+      }
+    }, '.del')
+
+
+    // 全局变量
+    var pageSize = 8;
+
+    // 分页查询
+    loadArticle(0)
+    function loadArticle(page) {
+
+      var obj = {
+        page: page,
+        pageSize: pageSize
+      }
+      $.get(baseURL + '/manager/article/findArticle', obj, function (res) {
+        // 请求成功之后再置空
+        $('.pagination').empty()
+        $('tbody').empty()
+        console.log(res)
+        res.data.list.forEach(function (item) {
+          var category = item.category ? item.category.name : item.category
+          var author = ''
+          if (!item.author) {
+            author = item.author
+          } else {
+            author = "佚名"
+          }
+          var rows = $(`<tr>
+          <td scope="col">`+ item.id + `</td>
+          <td scope="col">`+ item.title + `</td>
+          <td scope="col">`+ category + `</td>
+          <td scope="col">`+ author + `</td>
+          <td scope="col">`+ item.publishtime + `</td>
+          <td scope="col">`+ item.readtimes + `</td>
+          <td scope="col">`+ item.status + `</td>
+          <td scope="col">
+            <button class='del'>删除</button>
+            <button class='edit'>修改</button>
+          </td>
+        </tr>`)
+          $('tbody').append(rows)
+        })
+        // 总数据量
+        var total = res.data.total
+        // 总页数
+        var count = Math.ceil(total / pageSize)
+        for (var i = 1; i <= count; i++) {
+          var row = $(`<li class="page-item"><a class="page-link" href="#">` + i + `</a></li>`)
+          $('.pagination').append(row)
+        }
+      })
+    }
+
+    // 点击分页 事件委托
+    $('.pagination').on({
+      click: function () {
+        var page = $(this).text() - 1;
+        loadArticle(page)
+      }
+    }, '.page-item')
+  })
+</script>
+
+<style>
+  /* 操作栏中删除按钮 */
+  .del {
+    color: red;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 操作栏中修改按钮 */
+  .edit {
+    color: green;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 分页 */
+  #pagination{
+    margin: 0 auto;
+  }
+</style>

@@ -1,0 +1,389 @@
+<div class="user">
+  <!-- 导航 开始 -->
+  <div class="user_content">
+    <!-- 导航 标题 开始 -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item active" role="presentation">
+        <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" aria-selected="true">管理员</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="editor-tab" data-toggle="tab" href="#editor" aria-selected="false">编辑</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="vip-tab" data-toggle="tab" href="#vip" aria-selected="false">用户</a>
+      </li>
+    </ul>
+    <!-- 导航 标题 结束 -->
+    <!-- 导航 内容 开始 -->
+    <div class="tab-content" id="myTabContent">
+      <!-- 管理员 内容 开始 -->
+      <div class="tab-pane fade in active" id="admin">
+        <button type="button" class="btn btn-success addUser">新增</button>
+        <div class="table">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">编号</th>
+                <th scope="col">用户名</th>
+                <th scope="col">真实姓名</th>
+                <th scope="col">email</th>
+                <th scope="col">状态</th>
+                <th scope="col">注册日期</th>
+                <th scope="col">操作</th>
+              </tr>
+            </thead>
+            <tbody id="one">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 管理员 内容 结束 -->
+      <!-- 编辑 内容 开始 -->
+      <div class="tab-pane fade" id="editor">
+        <button type="button" class="btn btn-success addUser">新增</button>
+        <div class="table">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">编号</th>
+                <th scope="col">用户名</th>
+                <th scope="col">真实姓名</th>
+                <th scope="col">email</th>
+                <th scope="col">状态</th>
+                <th scope="col">注册日期</th>
+                <th scope="col">操作</th>
+              </tr>
+            </thead>
+            <tbody id="two">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 编辑 内容 结束 -->
+      <!-- 用户 内容 开始 -->
+      <div class="tab-pane fade" id="vip">
+        <button type="button" class="btn btn-success addUser">新增</button>
+        <div class="table">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">编号</th>
+                <th scope="col">用户名</th>
+                <th scope="col">真实姓名</th>
+                <th scope="col">email</th>
+                <th scope="col">状态</th>
+                <th scope="col">注册日期</th>
+                <th scope="col">操作</th>
+              </tr>
+            </thead>
+            <tbody id="three">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 用户 内容 结束 -->
+    </div>
+    <!-- 导航 内容 结束 -->
+  </div>
+  <!-- 导航 结束 -->
+  <!-- 模态框 开始 -->
+  <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">新增用户</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- 表单 开始 -->
+        <div class="modal-body">
+          <form action="">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">用户名</label>
+              <div class="col-sm-10">
+                <input type="text" name="username" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">密码</label>
+              <div class="col-sm-10">
+                <input type="password" name="password" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">真实姓名</label>
+              <div class="col-sm-10">
+                <input type="text" name="nickname" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">email</label>
+              <div class="col-sm-10">
+                <input type="text" name="email" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">角色</label>
+              <div class="col-sm-10">
+                <select class="form-control form-control-sm" id="role">
+                  <option value="admin">管理员</option>
+                  <option value="editor">编辑</option>
+                  <option value="user">用户</option>
+                </select>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+        <!-- 表单 结束 -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 模态框 结束 -->
+</div>
+
+
+<script>
+  $(function () {
+
+    // 操作 删除按钮
+    $('tbody').on({
+      click:function(){
+        // 拿到当前行的id
+        var oid=$(this).closest('tr').find('.id').text()
+        $.get(baseURL+'/manager/user/deleteUserById',{id:oid},function(res){ 
+          loadUser()
+        }) 
+      }
+    },'.del')
+
+    // 操作 改变用户状态
+    $('tbody').on({
+      click:function(){
+        // 拿到当前行的id
+        var oid=$(this).closest('tr').find('.id').text()
+        var status=''
+        if($(this).text()=='禁用'){
+          status=false
+        }else{
+          status=true
+        }
+        var obj={
+          id:oid,
+          status:status
+        }
+        $.post(baseURL+'/manager/user/changeStatus',obj,function(res){
+          loadUser()
+        })
+      }
+    },'.edit')
+
+    // 点击新增用户按钮
+    $('.addUser').click(function () {
+      $('#modal').show()
+      // 模态框 标题
+      $('.modal-title').text('新增用户')
+    })
+
+    // 模态框 点击 × 号关闭模态框
+    $('.close').click(function(){
+      $('#modal').hide()
+    })
+
+    // 模态框 点击关闭按钮
+    $('button:contains("关闭")').click(function(){
+      $('#modal').hide()
+    })
+
+    // 模态框 保存按钮
+    $('button:contains("保存")').click(function(){
+      $('#modal').hide()
+      var username=$('input[name=username]').val()
+      var nickname=$('input[name=nickname]').val()
+      var password=$('input[name=password]').val()
+      var email=$('input[name=email]').val()
+      var role=$('#role').val()
+      var obj={
+        username:username,
+        nickname:nickname,
+        password:password,
+        email:email,
+        role:role
+      }
+      $.ajax({
+        url:baseURL+'/manager/user/reg',
+        method:'post',
+        data:obj,
+        success:function(res){
+          loadUser()
+        }
+      })
+    })
+
+    // 事件处理函数
+    function dateParse(dataString) {
+      if (dataString) {
+        let date = new Date(dataString);
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+        let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+        return Y + M + D + h + m + s;
+      } else {
+        return '';
+      }
+    }
+
+    //获取用户信息
+    function loadUser() {
+      // 清空tbody里的所有信息
+      $('tbody').empty()
+      // 查询用户信息
+      $.ajax({
+        url: baseURL + '/manager/user/findAllUser',
+        method: 'get',
+        success: function (res) {
+          // 遍历,根据role来筛选
+          // filter()方法 进行筛选 用户 ，会返回一个数组
+
+          // 过滤出admin用户
+          var admin = res.data.filter(function (item) {
+            return item.role == 'admin'
+          })
+          // 过滤出editor用户
+          var editor = res.data.filter(function (item) {
+            return item.role == 'editor'
+          })
+          // 过滤出user用户
+          var user = res.data.filter(function (item) {
+            return item.role == 'user'
+          })
+
+          // 对admin数组进行遍历
+          admin.forEach(function (item) {
+            // 状态：当前用户是否能够使用  如果可用，显示正常，否则显示禁用
+            var status = ''
+            // 操作相关
+            var btn = ''
+            if (item.enabled == true) {
+              status = '正常'
+              btn = '禁用'
+            } else {
+              status = '禁用'
+              btn = '启用'
+            }
+            // 获取数据
+            var row = $(`<tr>
+                <td scope="col" class='id'>`+ item.id + `</td>
+                <td scope="col">`+ item.username + `</td>
+                <td scope="col">`+ item.nickname + `</td>
+                <td scope="col">`+ item.email + `</td>
+                <td scope="col">`+ status + `</td>
+                <td scope="col">`+ dateParse(item.regtime) + `</td>
+                <td scope="col">
+                  <button class='del'>删除</button>
+                  <button class='edit'>`+ btn + `</button>
+                </td>
+              </tr>`)
+            // 追加到tbody中
+            $('#one').append(row)
+          });
+
+          // 对editor数组进行遍历
+          editor.forEach(function (item) {
+            var status = ''
+            var btn = ''
+            if (item.enabled == true) {
+              status = '正常'
+              btn = '禁用'
+            } else {
+              status = '禁用'
+              btn = '启用'
+            }
+            var row = $(`<tr>
+                <td scope="col" class='id'>`+ item.id + `</td>
+                <td scope="col">`+ item.username + `</td>
+                <td scope="col">`+ item.nickname + `</td>
+                <td scope="col">`+ item.email + `</td>
+                <td scope="col">`+ status + `</td>
+                <td scope="col">`+ dateParse(item.regtime) + `</td>
+                <td scope="col">
+                  <button class='del'>删除</button>
+                  <button class='edit'>`+ btn + `</button>
+                </td>
+              </tr>`)
+            $('#two').append(row)
+          });
+
+          // 对user数组进行遍历
+          user.forEach(function (item) {
+            var status = ''
+            var btn = ''
+            if (item.enabled == true) {
+              status = '正常'
+              btn = '禁用'
+            } else {
+              status = '禁用'
+              btn = '启用'
+            }
+            var row = $(`<tr>
+              <td scope="col" class='id'>`+ item.id + `</td>
+              <td scope="col">`+ item.username + `</td>
+              <td scope="col">`+ item.nickname + `</td>
+              <td scope="col">`+ item.email + `</td>
+              <td scope="col">`+ status + `</td>
+              <td scope="col">`+ dateParse(item.regtime) + `</td>
+              <td scope="col">
+                <button class='del'>删除</button>
+                <button class='edit'>`+ btn + `</button>
+              </td>
+            </tr>`)
+            $('#three').append(row)
+          });
+        }
+      })
+    }
+    loadUser()
+  })
+</script>
+
+
+
+<style>
+  /* 右侧内容区 顶部 用户管理 */
+  .user_top {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+
+  /* 操作栏中删除按钮 */
+  .del {
+    color: red;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 操作栏中修改按钮 */
+  .edit {
+    color: green;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 表格的高度，使得表格内部产生滚动条 */
+  .table {
+    max-height: 500px;
+    overflow: auto;
+  }
+</style>

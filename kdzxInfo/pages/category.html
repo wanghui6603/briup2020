@@ -1,0 +1,297 @@
+<div class="category">
+  <!-- 下拉菜单 开始 -->
+  <div class="search">
+    <select class="form-control" id="one">
+      <option value="">请选择</option>
+    </select>
+    <select class="form-control" id="two">
+    </select>
+  </div>
+  <!-- 下拉菜单 结束 -->
+  <!-- 表格 开始 -->
+  <div class="category_content">
+    <button type="button" class="btn btn-success addCategory">新增</button>
+    <button type="button" class="btn btn-danger batch_del">批量删除</button>
+    <div class="table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">编号</th>
+            <th scope="col">栏目名称</th>
+            <th scope="col">父级栏目</th>
+            <th scope="col">描述</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- 表格 结束 -->
+  <!-- 模态框 开始 -->
+  <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">新增栏目信息</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- 表单 开始 -->
+        <div class="modal-body">
+          <form action="">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">栏目名称</label>
+              <div class="col-sm-10">
+                <input type="text" name="name" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">父栏目</label>
+              <div class="col-sm-10">
+                <select class="form-control form-control-sm" id="parentname">
+                  <option value="">财经</option>
+                  <option value="">军事</option>
+                  <option value="">抗击肺炎</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label col-form-label-sm">描述</label>
+              <div class="col-sm-10">
+                <input type="text" name="comment" class="form-control form-control-sm" id="colFormLabelSm">
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <!-- 表单 结束 -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 模态框 结束 -->
+</div>
+
+<script>
+  $(function () {
+
+    // 批量删除
+    $('batch_del').click(function(){
+        var oids = $('input[type=checkbox]:checkes').val();
+        console.log(oids)
+        $.get(baseURL + '/manager/category/batchDeleteCategory', { ids: oids }, function (res) {
+        loadCategory()
+      })
+    })
+
+    // 操作 删除按钮
+    $('tbody').on({
+      click: function () {
+        // 拿到当前行的id
+        var oid = $(this).closest('tr').find('input').val();
+        $.get(baseURL + '/manager/category/deleteCategoryById', { id: oid }, function (res) {
+          loadCategory()
+        })
+      }
+    }, '.del')
+
+    // 操作 修改栏目信息
+    // $('tbody').on({
+    //   click:function(){
+    //     if("this:contains('修改')"){
+    //       $('#modal').show()
+    //       $('.modal-title').text('修改栏目信息')
+    //       // 显示当前行原来的信息
+    //       // 删除当前行
+    //     }
+    //   }
+    // },'.edit')
+
+
+    // 点击新增用户按钮
+    $('.addCategory').click(function () {
+      $('#modal').show()
+      // 模态框 标题
+      $('.modal-title').text('新增栏目信息')
+    })
+
+    // 模态框 点击 × 号关闭模态框
+    $('.close').click(function () {
+      $('#modal').hide()
+    })
+
+    // 模态框 点击关闭按钮
+    $('button:contains("关闭")').click(function () {
+      $('#modal').hide()
+    })
+
+    // 模态框 保存按钮
+    $('button:contains("保存")').click(function () {
+      $('#modal').hide()
+      var name = $('input[name=name]').val()
+      var parentname = $('#parentname').val()
+      var comment = $('input[name=comment]').val()
+      var obj = {
+        name: name,
+        parent: parentname,
+        comment: comment
+      }
+      $.ajax({
+        url: baseURL + '/manager/category/saveOrUpdateCategory',
+        method: 'post',
+        data: obj,
+        success: function (res) {
+          loadCategory()
+        }
+      })
+    })
+
+    // 加载栏目信息
+    loadCategory()
+    function loadCategory() {
+      // 清空tbody里的所有信息
+      $('tbody').empty()
+      // 查询栏目信息
+      $.ajax({
+        url: baseURL + '/manager/category/findAllCategory',
+        method: 'get',
+        success: function (res) {
+          res.data.forEach(function (item) {
+            var parent = item.parent ? item.parent.name : "--"
+            // 获取数据
+            var row = $(`<tr>
+                <td scope="col" class='id'><input type="checkbox" value="`+ item.id + `"></td>
+                <td scope="col">`+ item.name + `</td>
+                <td scope="col">`+ parent + `</td>
+                <td scope="col">`+ item.comment + `</td>
+                <td scope="col">
+                  <button class='del'>删除</button>
+                  <button class='edit'>修改</button>
+                </td>
+              </tr>`)
+            // 追加到tbody中
+            $('tbody').append(row)
+          });
+        }
+      })
+    }
+
+
+    // 筛选一级栏目信息  
+    loadOneCategory()
+    function loadOneCategory() {
+      $.get(baseURL + '/manager/category/findAllCategory', function (res) {
+        // 一级栏目
+        var oneCategory = res.data.filter(function (item) {
+          // 过滤出父栏目为空的栏目
+          return !item.parent
+        })
+        oneCategory.forEach(function (item) {
+          var row = $(`<option value="` + item.id + `">` + item.name + `</option>`)
+          $('#one').append(row)
+        })
+      })
+    }
+
+    // 根据一级栏目筛选二级栏目
+    function loadTwoCategory(oid) {
+      $('#two').empty()
+      $.get(baseURL + '/manager/category/findCategoryByParentId', { id: oid }, function (res) {
+        var row = $(` <option value="">请选择</option>`)
+        $('#two').append(row)
+        res.data.forEach(function (item) {
+          var row = $(`<option value="` + item.id + `">` + item.name + `</option>`)
+          $('#two').append(row)
+        })
+      })
+    }
+
+    // 监听第一个下拉框,change做监听，如果当前值改变，触发函数
+    $('#one').change(function () {
+      if ($(this).val()) {
+        $('#two').css('display', 'inline-block')
+        loadTwoCategory($(this).val())
+      } else {
+        $('#two').css('display', 'none')
+      }
+    })
+
+
+    // 通过二级栏目的id查询栏目信息
+    function getCategoryById(oid) {
+      $.get(baseURL + '/manager/category/findAllCategory', function (res) {
+        var category = res.data.filter(function (item) {
+          return item.id == oid
+        })
+        category.forEach(function (item) {
+          $('tbody').empty()
+          var row = $(`<tr>
+                <td scope="col" class='id'><input type="checkbox" name="id"></td>
+                <td scope="col">`+ item.name + `</td>
+                <td scope="col">`+ item.parent.name + `</td>
+                <td scope="col">`+ item.comment + `</td>
+                <td scope="col">
+                  <button class='del'>删除</button>
+                  <button class='edit'>修改</button>
+                </td>
+              </tr>`)
+          // 追加到tbody中
+          $('tbody').append(row)
+        })
+      })
+    }
+
+    // 监听第二个下拉框，如果当前值改变，重新加载所有的数据,通过二级栏目的id去查询
+    $('#two').change(function () {
+      if ($(this).val()) {
+        // 根据id查询栏目信息
+        getCategoryById($(this).val())
+      } else {
+      }
+    })
+  })
+</script>
+
+
+<style>
+  /* 两个下拉列表的布局 */
+  #one,
+  #two {
+    width: 200px;
+    margin: 10px;
+    display: flex;
+    display: inline-block;
+  }
+
+  #two {
+    display: none;
+  }
+
+  /* 操作栏中删除按钮 */
+  .del {
+    color: red;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 操作栏中修改按钮 */
+  .edit {
+    color: green;
+    /* 鼠标手型 */
+    cursor: pointer;
+  }
+
+  /* 表格的高度，使得表格内部产生滚动条 */
+  .table {
+    max-height: 500px;
+    overflow: auto;
+  }
+</style>
