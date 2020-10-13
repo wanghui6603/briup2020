@@ -24,8 +24,6 @@ $(function () {
       $('.content-main').load('./pages/article.html')
     } else if (text == '用户管理') {
       $('.content-main').load('./pages/user.html')
-    }else if(text=='评论管理'){
-      $('.content-main').load('./pages/comment.html')
     }else{
       return;
     }
