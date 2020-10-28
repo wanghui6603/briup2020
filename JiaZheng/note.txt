@@ -1,9 +1,2 @@
-1.cnpm install项目内安装依赖
-2.cnpm run dev 启动项目
-	该项目已经预先搭建好了，ej_maneger/vue.config.js中已新增修改内容
-	新建项目、更改路由、新建文件
-3.更改请求的baseURL
-	a)src/http/axios.js中axios.defaults.baseURL的值可选更新
-	b)src/utils/request.js中baseURL的值
-	b)ej_maneger/.env.production 中VUE_APP_BASE_API的值
+JiaZheng Project
 
